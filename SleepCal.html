@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .calculator {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .calculator h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .calculator label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .calculator input, .calculator select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 0 auto 20px;
+            display: block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Sleep Calculator</h2>
+        <label for="wake-time">Wake-up Time:</label>
+        <input type="time" id="wake-time" name="wake-time">
+
+        <label for="sleep-cycles">Number of Sleep Cycles:</label>
+        <select id="sleep-cycles" name="sleep-cycles">
+            <option value="3">3 cycles (4.5 hours)</option>
+            <option value="4">4 cycles (6 hours)</option>
+            <option value="5">5 cycles (7.5 hours)</option>
+            <option value="6">6 cycles (9 hours)</option>
+        </select>
+
+        <button onclick="calculateSleepTime()">Calculate Best Bedtime</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateSleepTime() {
+            const wakeTime = document.getElementById('wake-time').value;
+            const sleepCycles = document.getElementById('sleep-cycles').value;
+
+            if (!wakeTime) {
+                alert('Please enter your wake-up time.');
+                return;
+            }
+
+            const wakeTimeDate = new Date();
+            const [wakeHours, wakeMinutes] = wakeTime.split(':');
+            wakeTimeDate.setHours(wakeHours, wakeMinutes);
+
+            const sleepCycleDuration = 90; // Each sleep cycle is 90 minutes
+            const totalSleepTime = sleepCycles * sleepCycleDuration;
+
+            wakeTimeDate.setMinutes(wakeTimeDate.getMinutes() - totalSleepTime);
+
+            const bedtime = wakeTimeDate.toTimeString().split(' ')[0].slice(0, 5);
+            document.getElementById('result').innerText = `You should go to bed at ${bedtime}`;
+        }
+    </script>
+</body>
+</html>
